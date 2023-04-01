@@ -1,10 +1,10 @@
 package com.lec.spring.service;
 
+import com.lec.spring.domain.FileDTO;
 import com.lec.spring.repository.FileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 
 @Service
 public class FileService {
@@ -20,7 +20,7 @@ public class FileService {
         System.out.println("FileService() 생성");
     }
 
-    public File findById(Long id){
+    public FileDTO findById(Long id){
         return fileRepository.findById(id).orElse(null);
     }
 }

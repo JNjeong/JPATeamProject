@@ -2,6 +2,7 @@ package com.lec.spring.controller;
 
 
 import com.lec.spring.service.FileService;
+import com.lec.spring.domain.FileDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -10,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -38,7 +40,7 @@ public class FileController {
     public ResponseEntity<Object> download(Long id){
         if(id==null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);  //400번대 에러 발생시킨다.
 
-        File file = fileService.findById(id);
+        FileDTO file = fileService.findById(id);
         if(file==null) return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); //404번대 에러 발생.
 
         String sourceName = file.getSource();    // 원본 이름

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity(name = "tb_file")
-public class File {
+public class FileDTO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

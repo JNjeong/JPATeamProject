@@ -46,43 +46,38 @@ public class CommentService {
     }
 
     // 특정 글(writeId) 에 특정 사용자(userId) 가 댓글 작성
-    public QryResult write(Long writeId, Long userId, String content) {
+    public QryResult write(Long boardId, Long userId, String content) {
         User user = userRepository.findById(userId).orElse(null);
 
         Comment comment = Comment.builder()
                 .user(user)
                 .content(content)
-                .write(writeId)
+                .board(boardId)
                 .build();
 
-        commentRepository.save(comment);  // INSERT
-
+        commentRepository.save(comment);
         QryResult result = QryResult.builder()
                 .count(1)
                 .status("OK")
                 .build();
-
         return result;
     }
 
-    // 특정 댓글(id) 삭제
-    public QryResult delete(Long id) {
 
+    public QryResult delete(Long id) {
         Comment comment = commentRepository.findById(id).orElse(null);
         int count = 0;
         String status = "FAIL";
 
         if(comment != null){
-            commentRepository.delete(comment);  // DELETE
+            commentRepository.delete(comment);
             count = 1;
             status = "OK";
         }
-
         QryResult result = QryResult.builder()
                 .count(count)
                 .status(status)
                 .build();
-
         return result;
     }
 }

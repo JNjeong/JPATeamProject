@@ -40,9 +40,9 @@ public class Board extends BaseEntity{
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @ToString.Exclude
     @Builder.Default
-    private List<File> fileList = new ArrayList<>();
+    private List<FileDTO> fileList = new ArrayList<>();
 
-    public void addFiles(File... files){
+    public void addFiles(FileDTO... files){
         Collections.addAll(this.fileList, files);
     }
 

@@ -1,15 +1,9 @@
 package com.lec.spring.service;
 
-import com.lec.spring.common.C;
 import com.lec.spring.domain.Board;
 import com.lec.spring.domain.FileDTO;
-import com.lec.spring.domain.User;
-import com.lec.spring.domain.Write;
 import com.lec.spring.repository.BoardRepository;
 import com.lec.spring.repository.FileRepository;
-import com.lec.spring.repository.UserRepository;
-import com.lec.spring.repository.WriteRepository;
-import com.lec.spring.util.U;
 import com.lec.spring.util.Util;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,52 +61,37 @@ public class BoardService {
         System.out.println("BoardService() 생성");
     }
 
-    public int write(Board board
-            , Map<String, MultipartFile> files   // 첨부 파일들.
-    ){
-        // 현재 로그인한 작성자 정보
+    public int write(Board board, Map<String, MultipartFile> files){
         User user = Util.getLoggedUser();
-
-        // 위 정보는 session 의 정보이고, 일단 DB 에서 다시 읽어온다
         user = userRepository.findById(user.getId()).orElse(null);
-        board.setUser(user);  // 글 작성자 세팅
 
-        board = writeRepository.saveAndFlush(board);
+        board.setUser(user);
+        board = boardRepository.saveAndFlush(board);
 
-        // 첨부파일 추가
         addFiles(files, board.getId());
-
         return 1;
     }
 
-    // 특정 글(id) 첨부파일(들) 추가
     private void addFiles(Map<String, MultipartFile> files, Long id){
         if(files != null){
             for(Map.Entry<String, MultipartFile> e :files.entrySet()){
-
-                // name="upfile##" 인 경우만 첨부파일 등록. (이유, 다른 웹에디터와 섞이지 않도록..ex: summernote)
                 if(!e.getKey().startsWith("upfile")) continue;
 
-                // 첨부파일 정보 출력
-                System.out.println("\n첨부파일 정보: " + e.getKey());   // name값
+                System.out.println("\n첨부파일 정보: " + e.getKey());
                 Util.printFileInfo(e.getValue());
                 System.out.println();
+                FileDTO file = upload(e.getValue());
 
-                // 물리적인 파일 저장
-                File file = upload(e.getValue());
-
-                // 성공하면 DB 에도 저장
                 if(file != null){
-                    file.setBoard(id);   // FK 설정
-                    fileRepository.save(file);   // INSERT
+                    file.setBoard(id);
+                    fileRepository.save(file);
                 }
             }
         }
-    }// end addFiles()
+    }
 
-    // 물리적으로 파일 저장.  중복된 이름 rename 처리
-    private File upload(MultipartFile multipartFile){
-        File attachment = null;
+    private FileDTO upload(MultipartFile multipartFile){
+        FileDTO attachment = null;
 
         String originalFilename = multipartFile.getOriginalFilename();
         if(originalFilename == null || originalFilename.length() == 0) return null;
@@ -142,82 +121,61 @@ public class BoardService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        attachment = File.builder()
-                .file(fileName)   // 저장된 이름
-                .source(sourceName)  // 원본이름
-                .build();
+        attachment = FileDTO.builder().file(fileName).source(sourceName).build();
 
         return attachment;
-    } // end upload
+    }
 
 
     @Transactional
     public List<Board> detail(long id) {
         List<Board> list = new ArrayList<>();
+        Board board = boardRepository.findById(id).orElse(null);
 
-        Board write = writeRepository.findById(id).orElse(null);
-
-        if(write != null){
-            // 조회수 증가
-            write.setViewCnt(write.getViewCnt() + 1);
-            writeRepository.saveAndFlush(write);    // UPDATE
-            // 첨부파일(들) 정보 가져오기
-            List<File> fileList = fileRepository.findByWrite(write.getId());
+        if(board != null){
+            board.setViewCnt(board.getViewCnt() + 1);
+            boardRepository.saveAndFlush(board);
+            List<FileDTO> fileList = fileRepository.findByWrite(board.getId());
             setImage(fileList);
-            write.setFileList(fileList);
-
-            list.add(write);
+            board.setFileList(fileList);
+            list.add(board);
         }
-
         return list;
     }
 
-    // [이미지 파일 여부 세팅]
-    private void setImage(List<File> fileList) {
-        // upload 실제 물리적인 경로
+    private void setImage(List<FileDTO> fileList) {
         String realPath = new File(uploadDir).getAbsolutePath();
 
-        for(File fileDto : fileList) {
+        for(FileDTO fileDto : fileList) {
             BufferedImage imgData = null;
-            File f = new File(realPath, fileDto.getFile());  // 첨부파일에 대한 File 객체
+            File f = new File(realPath, fileDto.getFile());
             try {
                 imgData = ImageIO.read(f);
-                // ※ ↑ 파일이 존재 하지 않으면 IOExcepion 발생한다
-                //   ↑ 이미지가 아닌 경우는 null 리턴
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 System.out.println("파일존재안함: " + f.getAbsolutePath() + " [" + e.getMessage() + "]");
             }
-
-            if(imgData != null) fileDto.setImage(true); // 이미지 여부 체크
-        } // end for
+            if(imgData != null) fileDto.setImage(true);
+        }
     }
 
     public List<Board> list(){
-        return writeRepository.findAll();
+        return boardRepository.findAll();
     }
 
-    // 특정 id 의 글 읽어오기
-    // 조회수 증가 없음
     public List<Board> selectById(long id) {
         List<Board> list = new ArrayList<>();
-
-        Board write = writeRepository.findById(id).orElse(null);
+        Board write = boardRepository.findById(id).orElse(null);
 
         if(write != null){
-            // 첨부파일 정보 가져오기
-            List<File> fileList = fileRepository.findByWrite(write.getId());
-            setImage(fileList);   // 이미지 파일 여부 세팅
-//            write.setFiles(fileList);
+            List<FileDTO> fileList = fileRepository.findByWrite(write.getId());
+            setImage(fileList);
             write.setFileList(fileList);
-
             list.add(write);
         }
-
         return list;
     }
 
-    // 페이징 리스트
     public List<Board> list(Integer page, Model model){
         if(page == null) page = 1;
         if(page < 1) page = 1;
@@ -228,18 +186,11 @@ public class BoardService {
         Integer pageRows = (Integer)session.getAttribute("pageRows");
         if(pageRows == null) pageRows = 10;
         session.setAttribute("page", page);
-
-        Page<Board> pageWrites = writeRepository.findAll(PageRequest.of(page-1, pageRows, Sort.by(Sort.Order.desc("id"))));
+        Page<Board> pageWrites = boardRepository.findAll(PageRequest.of(page-1, pageRows, Sort.by(Sort.Order.desc("id"))));
 
         long cnt = pageWrites.getTotalElements();
-
-        int totalPage =  pageWrites.getTotalPages(); //총 몇 '페이지' 분량인가?
-
-        // page 값 보정
+        int totalPage =  pageWrites.getTotalPages();
         if(page > totalPage) page = totalPage;
-
-
-        // [페이징] 에 표시할 '시작페이지' 와 '마지막페이지' 계산
         int startPage = ((int)((page - 1) / writePages) * writePages) + 1;
         int endPage = startPage + writePages - 1;
         if (endPage >= totalPage) endPage = totalPage;
@@ -248,14 +199,11 @@ public class BoardService {
         model.addAttribute("page", page); // 현재 페이지
         model.addAttribute("totalPage", totalPage);  // 총 '페이지' 수
         model.addAttribute("pageRows", pageRows);  // 한 '페이지' 에 표시할 글 개수
-
-        // [페이징]
         model.addAttribute("url", Util.getRequest().getRequestURI());  // 목록 url
         model.addAttribute("writePages", writePages); // [페이징] 에 표시할 숫자 개수
         model.addAttribute("startPage", startPage);  // [페이징] 에 표시할 시작 페이지
         model.addAttribute("endPage", endPage);   // [페이징] 에 표시할 마지막 페이지
 
-        // 해당 페이지의 글 목록 읽어오기
         List<Board> list = pageWrites.getContent();
         model.addAttribute("list", list);
 
@@ -264,76 +212,57 @@ public class BoardService {
 
 
 
-    public int update(Board write
-            , Map<String, MultipartFile> files   // 새로 추가된 첨부파일들
-            , Long[] delfile){   // 삭제될 첨부파일들
+    public int update(Board write, Map<String, MultipartFile> files, Long[] delfile){
         int result = 0;
 
-        // update 하고자 하는 것을 일단 읽어와야 한다
-        Board w =writeRepository.findById(write.getId()).orElse(null);
+        Board w =boardRepository.findById(write.getId()).orElse(null);
         if(w != null){
             w.setSubject(write.getSubject());
             w.setContent(write.getContent());
-            writeRepository.save(w);
-
-            // 첨부파일 추가
+            boardRepository.save(w);
             addFiles(files, write.getId());
-
-            // 삭제할 첨부파일들은 삭제하기
-
             if(delfile != null){
                 for(Long fileId : delfile){
-                    File file = fileRepository.findById(fileId).orElse(null);
+                    FileDTO file = fileRepository.findById(fileId).orElse(null);
                     if(file != null){
-                        delFile(file);   // 물리적으로 삭제
-                        fileRepository.delete(file);  // dB 에서 삭제
+                        delFile(file);
+                        fileRepository.delete(file);
                     }
                 }
             }
             return 1;
         }
-
-        return result;
-    } // end update
-
-    public int deleteById(long id){
-        int result = 0;
-
-        Write write = writeRepository.findById(id).orElse(null);
-        if(write != null) {
-            // 물리적으로 저장된 첨부파일(들) 삭제
-            List<FileDTO> fileList = fileRepository.findByWrite(id);
-            if(fileList != null && fileList.size() > 0) {
-                for(FileDTO file : fileList) {
-                    delFile(file);
-                }
-                // 글삭제 (참조하는 첨부파일, 댓글 등도 같이 삭제 될 것이다 ON DELETE CASCADE)
-                writeRepository.delete(write);
-
-                return 1;
-            }
-
-        }
-
         return result;
     }
 
-    // 특정 첨부파일(id) 를 물리적으로 삭제
+    public int deleteById(long id){
+        int result = 0;
+        Board board = boardRepository.findById(id).orElse(null);
+        if(board != null) {
+            List<FileDTO> fileList = fileRepository.findByWrite(id);
+            if(fileList != null && fileList.size() > 0) {
+                for(FileDTO file : fileList) {delFile(file);}
+                boardRepository.delete(board);
+                return 1;
+            }
+        }
+        return result;
+    }
+
     private void delFile(FileDTO file) {
         String saveDirectory = new File(uploadDir).getAbsolutePath();
-
-        File f = new File(saveDirectory, file.getFile()); // 물리적으로 저장된 파일들이 삭제 대상
+        File f = new File(saveDirectory, file.getFile());
         System.out.println("삭제시도--> " + f.getAbsolutePath());
 
         if (f.exists()) {
-            if (f.delete()) { // 삭제!
+            if (f.delete()) {
                 System.out.println("삭제 성공");
             } else {
                 System.out.println("삭제 실패");
             }
         } else {
             System.out.println("파일이 존재하지 않습니다.");
-        } // end if
+        }
     }
 
 }
