@@ -1,64 +1,74 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<th:block th:fragment="header">
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+  <th:block th:fragment="header">
     <meta charset="utf-8" />
 
     <!-- header -->
     <nav class="site-nav">
-        <div class="container">
-            <div class="site-navigation">
-                <a href="main.html" class="logo float-left m-0"
-                ><span class="text-primary">국립현대미술관</span></a
-                >
-                <div class="login">
-                    <div class="col-11 text-right">
-                        <a href="user/login.html" class="custom-prev-v2 js-custom-prev-v2">로그인</a>
-                        <span class="mx-3">|</span>
-                        <a href="user/register.html" class="custom-next-v2 js-custom-next-v2">회원가입</a>
-                    </div>
-                </div>
+      <div class="container">
+        <div class="site-navigation">
+          <a th:href="@{/main/main}" class="logo float-left m-0"
+          ><span class="text-primary">미술랭</span></a
+          >
+          <div class="login">
+            <!-- 로그인 하지 않았을 때 -->
+            <div class="col-11 text-right" sec:authorize="isAnonymous()">
+              <a th:href="@{/user/login}">로그인</a>
+              <span class="mx-3">|</span>
+              <a th:href="@{/user/register}">회원가입</a>
+            </div>
+            <!-- 로그인 했을 때 -->
+            <form class="col-11 text-right" th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}">
+              <span><a id="name">[[${user.username}]] ([[${user.name}]]) 님 환영합니다</a></span>
+              <span class="mx-3">|</span>
+              <a th:href="@{/user/mypage}">마이페이지</a>
+              <span class="mx-3">|</span>
+              <button class="logoutBtn" type="submit">로그아웃</button>
+            </form>
+          </div>
 
-            <!-- 메뉴바 -->
-            <ul class="js-clone-nav d-none d-lg-inline-noone text-left site-menu">
-                <li class="active"><a href="index.html">Home</a></li>
-                <li class="has-children">
-                    <a href="#">Pages</a>
-                    <ul class="dropdown">
-                        <li><a href="portfolio.html">Portfolio</a></li>
-                        <li><a href="blog.html">Blog</a></li>
-                        <li><a href="single.html">Single</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-
-                        <li class="has-children">
-                            <a href="#">Menu Two</a>
-                            <ul class="dropdown">
-                                <li><a href="#">Sub Menu One</a></li>
-                                <li><a href="#">Sub Menu Two</a></li>
-                                <li><a href="#">Sub Menu Three</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Menu Three</a></li>
-                    </ul>
-                </li>
+          <ul class="js-clone-nav d-none d-lg-inline-noone text-left site-menu">
+            <li><a th:href="@{/main/main}">Home</a></li>
+            <li class="has-children">
+              <a href="#">Pages</a>
+              <ul class="dropdown">
                 <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="elements.html">Elements</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="single.html">Single</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
+                <li><a href="contact.html">Contact</a></li>
 
-                <a
+                <li class="has-children">
+                  <a href="#">Menu Two</a>
+                  <ul class="dropdown">
+                    <li><a href="#">Sub Menu One</a></li>
+                    <li><a href="#">Sub Menu Two</a></li>
+                    <li><a href="#">Sub Menu Three</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">Menu Three</a></li>
+              </ul>
+            </li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="elements.html">Elements</a></li>
+            <li><a href="about.html">About</a></li>
+            <li class="active"><a href="contact.html">Contact Us</a></li>
+          </ul>
+
+          <a
                   href="#"
                   class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-block"
                   data-toggle="collapse"
                   data-target="#main-navbar"
-                >
-                <span></span>
-                </a>
-            </div>
+          >
+            <span></span>
+          </a>
         </div>
+      </div>
     </nav>
-</th:block>
+  </th:block>
 </html>

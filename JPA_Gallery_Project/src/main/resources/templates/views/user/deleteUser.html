@@ -1,0 +1,122 @@
+<!-- /*
+* Template Name: Style
+* Template Author: Untree.co
+* Tempalte URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" />
+
+    <script src="https://kit.fontawesome.com/51772bd9bd.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="free template, bootstrap, bootstrap4" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+            href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <script th:src="@{/js/user/deleteUser.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}" />
+    <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}" />
+    <link rel="stylesheet" th:href="@{/fonts/feather/style.css}" />
+    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}" />
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/aos.css}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <title>마이페이지</title>
+</head>
+<body>
+<div class="lines-wrap">
+    <div class="lines-inner">
+        <div class="lines"></div>
+    </div>
+</div>
+<!-- END lines -->
+
+<div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+            <span class="icofont-close js-menu-toggle"></span>
+        </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+</div>
+
+<th:block th:insert="~{common/header::header}"></th:block>
+
+<div class="custom-login">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <h1 class="login-heading">회원 탈퇴</h1>
+                <br/>
+                <div class="line js-line mx-auto mb-3 my-3"></div>
+                <p class="mypageText">
+                    <b>[[${user.name}]]</b> 님<br />
+                    정말 회원을 탈퇴하시겠습니까?<br><br><br><br>
+                </p>
+            </div>
+
+            <div class="col-md-12 col-lg-8 pb-4" data-aos="fade-up" data-aos-delay="200">
+                <form name="formDelete" th:action="@{/user/deleteUserOk}">
+                    <input type="hidden" id="id" name="id" th:value="${user.id}">
+                </form>
+                <button th:data-id="${user.id}" class="btn btn-primary">확인</button>
+                <button type="button" onclick="location.href='/user/mypage'" class="btn btn-primary">취소</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<br><br>
+
+<th:block th:insert="~{common/footer::footer}"></th:block>
+
+<div id="overlayer"></div>
+<div class="loader">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/js/jquery-migrate-3.0.0.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/owl.carousel.min.js}"></script>
+<script th:src="@{/js/aos.js}"></script>
+<script th:src="@{/js/imagesloaded.pkgd.js}"></script>
+<script th:src="@{/js/isotope.pkgd.min.js}"></script>
+<script th:src="@{/js/jquery.animateNumber.min.js}"></script>
+<script th:src="@{/js/jquery.stellar.min.js}"></script>
+<script th:src="@{/js/jarallax.min.js}"></script>
+<script th:src="@{/js/jarallax-element.min.js}"></script>
+<script th:src="@{/js/jquery.waypoints.min.js}"></script>
+<script th:src="@{/js/jquery.fancybox.min.js}"></script>
+
+<script th:src="@{/js/jquery.lettering.js}"></script>
+
+<script th:src="@{/js/TweenMax.min.js}"></script>
+<script th:src="@{/js/ScrollMagic.min.js}"></script>
+<script th:src="@{/js/scrollmagic.animation.gsap.min.js}"></script>
+<script th:src="@{/js/debug.addIndicators.min.js}"></script>
+
+<script th:src="@{/js/custom.js}"></script>
+</body>
+</html>
