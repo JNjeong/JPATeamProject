@@ -1,5 +1,22 @@
 package com.lec.spring.config;
 
+
+// WebSecurityConfigurerAdapter
+// deprecated 공식 : https://docs.spring.io/spring-security/site/docs/5.7.0-M2/api/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html
+//    ↑ 읽어보면  WebSecurityConfigurerAdapter가 Deprecated 되었으니 SecurityFilterChain를 Bean으로 등록해서 사용하라는 말.
+// 대안 공식문서 참조 : https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
+
+
+//  Spring Security 6 에선
+// authorizeRequests() 는 deprecated 되고
+// antMathers(), mvcMathcers(), regexMatchers() @EnableGlobalMethodSecurity 들은  없어졌다?
+// https://stackoverflow.com/questions/74683225/updating-to-spring-security-6-0-replacing-removed-and-deprecated-functionality
+
+
+// What's new Sprint Security 6
+// https://docs.spring.io/spring-security/reference/whats-new.html
+
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +52,7 @@ public class SecurityConfig {
 //    }
 //    예제용 코드이다.
 //==============================================================
+
 
     // PasswordEncoder 를 bean 으로 IoC 에 등록
     // IoC 에 등록된다, IoC 내에선 '어디서든' 가져다가 사용할수 있다.
@@ -124,3 +142,8 @@ public class SecurityConfig {
 
 
 }
+
+
+
+
+
