@@ -12,38 +12,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
-    //특정 페이지를 이동하려 할때, 로그인(인증)이 되어있지 않다면 로그인 창으로 이동한다.
-    //직후 로그인 하기 전에 가려했던 페이지로 이동시켜주는 작업을 default로 가지고 있는 Handler이다.
-
-    //AuthenticationSuccessHandler(I)
-    // └─ SavedRequestAwareAuthenticationSuccessHandler  (상속 관계임)
-    //    공식 주소 : https://docs.spring.io/spring-security/site/docs/4.0.x/apidocs/org/springframework/security/web/authentication/SavedRequestAwareAuthenticationSuccessHandler.html
 
     public CustomLoginSuccessHandler(String defaultTargetUrl){
-        // SavedRequestAwareAuthenticationSuccessHandler#setDefaultTargetUrl()
-        // 로그인후 특별히 redirect 할 url 이 없는경우 기본적으로 rediret 할 url
-
+        // 로그인후 특별히 redirect 할 url 이 없는경우 기본적으로 redirect 할 url
         setDefaultTargetUrl(defaultTargetUrl);
     }
 
-
-    //로그인 성공 직후 수행할 동작
+    // 로그인 성공 후 수행할 동작
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
-        System.out.println("### 로그인 성공 : onAuthenticationSuccess() 호출 ###");
+        System.out.println("### 로그인 성공: onAuthenticationSuccess() 호출 ###");
 
         System.out.println("접속IP: " + getClientIp(request));
         PrincipalDetails userDetails = (PrincipalDetails)authentication.getPrincipal();
         System.out.println("username: " + userDetails.getUsername());
         System.out.println("password: " + userDetails.getPassword());
-        System.out.println("user authority : " + userDetails.getAuthorities());
-        List<String> roleNames = new ArrayList<>();   // 권한이름들
+
+        // 권한 이름
+        List<String> roleNames = new ArrayList<>();
         authentication.getAuthorities().forEach(authority -> {
             roleNames.add(authority.getAuthority());
         });
         System.out.println("authorities: " + roleNames);
 
-        // 로그인 시간을 세션에 저장하기 (※ Logout 예제에서 사용)
+        // 로그인 시간을 세션에 저장
         LocalDateTime loginTime = LocalDateTime.now();
         System.out.println("로그인 시간: " + loginTime);
         request.getSession().setAttribute("loginTime", loginTime);
@@ -51,8 +43,6 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         // 로그인 직전 url 로 redirect 하기
         super.onAuthenticationSuccess(request, response, authentication);
     }
-
-
 
     // request 를 한 client ip 가져오기
     public static String getClientIp(HttpServletRequest request) {
@@ -74,7 +64,6 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         }
         return ip;
     }
-
 
 
 }
