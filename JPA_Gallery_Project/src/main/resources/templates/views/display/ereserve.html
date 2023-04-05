@@ -1,10 +1,163 @@
+<!-- /*
+* Template Name: Style
+* Template Author: Untree.co
+* Tempalte URI: https://untree.co/
+* License: https://creativecommons.org/licenses/by/3.0/
+*/ -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Untree.co">
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}">
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+
+    <meta name="description" content="" />
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">
+    <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
+    <link rel="stylesheet" th:href="@{/fonts/feather/style.css}">
+    <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
+    <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <link rel="stylesheet" th:href="@{/css/aos.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <title>Reservation</title>
+
 </head>
 <body>
+<script>
+$(document).ready(function(){
+    $('.datepicker')
+        .datepicker({
+            format: 'yyyy-mm-dd',
+            startDate: '0d',
+            todayHighlight: true,
+            toggleActive: true,
+            autoclose: true,
+            language: 'ko'
+
+        })
+        .on('changeDate', function(){
+            $('#pickdate').empty();
+            $('#pickdate').append($('#dp1').val());
+
+        })
+
+    $('.timepicker').timepicker({
+        timeFormat: 'h:mm p',
+        interval: 30,
+        minTime: '10',
+        maxTime: '5:30pm',
+        defaultTime: '10',
+        startTime: '10:00',
+        dynamic: false,
+        dropdown: true,
+        scrollbar: true,
+
+        change: function(time) {
+            var txt = time.toLocaleString('en-US',{hour: '2-digit', minute: '2-digit', hour12: true});
+            $("#picktime").text(txt);
+
+        }
+
+    })
+
+});
+
+</script>
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                    <div class="feature-v3 d-block">
+                        <div class="image-stack-v2">
+                            <div class="image-stack__item image-stack__item--bottom">
+                                <img th:src="${detail.dp_main_page}" alt="Image" class="img-fluid">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                    <div class="feature-v3 d-block">
+                        <div class="text">
+                            <h2 class="mb-4">[[${detail.dp_name}]]</h2>
+                            <div class="line my-3"></div>
+                            <br><br>
+                            <p>기간 : </p><p>[[${detail.dp_start}]] ~ [[${detail.dp_end}]]</p>
+                            <br>
+                            <p>시간 : </p><p>월,화,수,목,금,토,일 : 10:00-18:00</p>
+                            <br>
+                            <p>관람안내 : </p><p>·  입장마감시간은 선택하신 관람시간부터 20분 전까지 입니다.
+                            <br>
+                            ·  타인에게 관람권을 양도 또는 판매하는 행위는 금지하고 있으며, 예약자 본인이 아닌 경우 관람이 제한될 수 있습니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0">
+                    <form th:action="@{/display/reserveOk}" method="post" enctype="Multipart/form-data">
+                    <div class="feature-v3 d-block">
+                        <div class="text">
+                            <br><br><br><br><br>
+                            <h3>선택 관람일: </h3>
+                            <div class="container-fluid px-1 px-sm-5 mx-auto">
+                                <div class="row d-flex justify-content-sm-center px-2">
+                                    <div class="form-group row">
+                                        <input type="text" id="dp1" class="datepicker mr-2" placeholder="2023-01-01" name="date">
+                                        <div id="pickdate"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text">
+                            <h3>관람 시간:</h3>
+                            <div class="container-fluid px-1 px-sm-5 mx-auto">
+                                <div class="row d-flex justify-content-sm-center px-2">
+                                    <div class="form-group row">
+                                        <input type="text" id="tp1" class="timepicker"/>
+                                        <div id="picktime"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <br>
+                            <h3>잔여석 : </h3><span>[[${book.seat}]]</span>
+                            <br><br><br>
+                    </div>
+                        <button type="submit" class="btn btn-success" id="pick" th:if="${book.seat > 0}">예약완료</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </body>
 </html>
