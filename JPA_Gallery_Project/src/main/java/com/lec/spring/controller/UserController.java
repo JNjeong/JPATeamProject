@@ -5,8 +5,12 @@ import com.lec.spring.domain.User;
 import com.lec.spring.domain.UserValidator;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +32,8 @@ public class UserController {
 
     private UserService userService;
     private final UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder pwEncoder;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -105,6 +111,21 @@ public class UserController {
         return "user/modify";
     }
 
+    @GetMapping("/checkPwModify")
+    public void checkPwModify(@AuthenticationPrincipal PrincipalDetails userDetail, Model model) {
+        Optional<User> user = userRepository.findById(userDetail.getUser().getId());
+        User user1 = user.get();
+        model.addAttribute("userInfo", user1);
+    }
+
+    @PostMapping("/checkPwModify")
+    @ResponseBody
+    public boolean checkPasswordModfiy(@AuthenticationPrincipal PrincipalDetails user,
+                                 @RequestParam String checkPassword){
+        Long member_id = user.getUser().getId();
+        return userService.checkPassword(member_id, checkPassword);
+    }
+
     @PostMapping("/modify")
     public String modifyOk(@Valid User user
             , BindingResult result  // UserValidator 가 유효성 검증한 결과가 담긴 객체
@@ -161,6 +182,21 @@ public class UserController {
         User user = userService.findByUsername(loginId);
         model.addAttribute("user", user);
         return "user/deleteUser";
+    }
+
+    @GetMapping("/checkPwDelete")
+    public void checkPwDelete(@AuthenticationPrincipal PrincipalDetails userDetail, Model model) {
+        Optional<User> user = userRepository.findById(userDetail.getUser().getId());
+        User user1 = user.get();
+        model.addAttribute("userInfo", user1);
+    }
+
+    @PostMapping("/checkPwDelete")
+    @ResponseBody
+    public boolean checkPasswordDelete(@AuthenticationPrincipal PrincipalDetails user,
+                                 @RequestParam String checkPassword){
+        Long member_id = user.getUser().getId();
+        return userService.checkPassword(member_id, checkPassword);
     }
 
     @PostMapping("/deleteUserOk")

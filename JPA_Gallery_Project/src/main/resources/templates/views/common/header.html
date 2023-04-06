@@ -23,7 +23,7 @@
             </div>
             <!-- 로그인 했을 때 -->
             <form class="col-11 text-right" th:action="@{/user/logout}" method="POST" sec:authorize="isAuthenticated()" th:with="user=${#authentication.getPrincipal().getUser()}">
-              <span><a id="name">[[${user.username}]] ([[${user.name}]]) 님 환영합니다</a></span>
+              <span><a id="name">[[${user.username}]] 님 환영합니다</a></span>
               <span class="mx-3">|</span>
               <a th:href="@{/user/mypage}">마이페이지</a>
               <span class="mx-3">|</span>

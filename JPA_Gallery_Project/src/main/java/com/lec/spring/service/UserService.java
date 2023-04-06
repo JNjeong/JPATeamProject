@@ -5,10 +5,10 @@ import com.lec.spring.domain.User;
 import com.lec.spring.repository.AuthorityRepository;
 import com.lec.spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +84,13 @@ public class UserService {
         return 1;
     }
 
+    public boolean checkPassword(Long id, String checkPassword) {
+        User user = userRepository.findById(id).orElse(null);
+        String realPassword = user.getPassword();
+        boolean matches = passwordEncoder.matches(checkPassword, realPassword);
+        return matches;
+    }
+
     // 회원정보 수정
     public int modify(Long id, User updatedUser){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -103,11 +110,6 @@ public class UserService {
     // 회원 탈퇴
     public void deleteUser(Long id){
         userRepository.deleteById(id);
-    }
-
-    //비밀번호 변경, 회원 탈퇴 시, 비밀번호를 확인
-    public boolean matchPassword(PasswordEncoder passwordEncoder, User user, String checkPassword){
-        return passwordEncoder.matches(checkPassword, user.getPassword());
     }
 
     // 특정 회원의 authorities

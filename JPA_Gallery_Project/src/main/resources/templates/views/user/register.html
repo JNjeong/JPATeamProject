@@ -32,6 +32,8 @@
     <link rel="stylesheet" th:href="@{/css/aos.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 
+    <script th:src="@{/js/user/register.js}"></script>
+
     <title>회원가입</title>
   </head>
   <body>
@@ -92,7 +94,7 @@
                 </div>
                 <div class="form-group justify-content-center">
                   <label class="text-black" for="phonenumber">휴대폰 번호</label>
-                  <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="전화번호" th:value="${phonenumber}" />
+                  <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="전화번호 (xxx-xxxx-xxxx)" th:value="${phonenumber}" />
                 </div>
                 <div class="form-group justify-content-center">
                   <label class="text-black" for="email">이메일</label>

@@ -25,7 +25,6 @@
             rel="stylesheet"
     />
 
-    <script th:src="@{/js/user/deleteUser.js}"></script>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/animate.min.css}" />
@@ -37,6 +36,8 @@
     <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}" />
     <link rel="stylesheet" th:href="@{/css/aos.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <script th:src="@{/js/user/checkPwModify.js}"></script>
 
     <title>마이페이지</title>
 </head>
@@ -62,27 +63,29 @@
 <div class="custom-login">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <h1 class="login-heading">회원 탈퇴</h1>
+            <div class="col-lg-10">
+                <h1 class="login-heading">비밀번호 확인</h1>
                 <br/>
                 <div class="line js-line mx-auto mb-3 my-3"></div>
                 <p class="mypageText">
-                    <b>[[${user.name}]]</b> 님<br />
-                    정말 회원을 탈퇴하시겠습니까?<br><br><br><br>
+                    <b>[[${userInfo.name}]]</b> 님<br />
+                    비밀번호를 입력해주세요<br><br><br>
                 </p>
             </div>
-
-            <div class="col-md-12 col-lg-8 pb-4" data-aos="fade-up" data-aos-delay="200">
-                <form name="formDelete" th:action="@{/user/deleteUserOk}" method="POST">
-                    <input type="hidden" id="id" name="id" th:value="${user.id}">
+            <div class="col-md-12 col-lg-4 pb-4" data-aos="fade-up" data-aos-delay="200">
+                <form>
+                    <label class="text-black" for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" />
+                        <br><br><br>
+                    <button type="button" onclick="checkPw()" class="btn btn-primary">확인</button>
+                    <button type="button" onclick="location.href='/user/mypage'" class="btn btn-primary">취소</button>
                 </form>
-                <button th:data-id="${user.id}" class="btn btn-primary">확인</button>
-                <button type="button" onclick="location.href='/user/mypage'" class="btn btn-primary">취소</button>
             </div>
 
         </div>
     </div>
 </div>
+
 
 <br><br>
 
