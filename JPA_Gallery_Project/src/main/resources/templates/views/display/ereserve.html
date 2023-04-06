@@ -6,7 +6,9 @@
 */ -->
 <!DOCTYPE html>
 <html lang="ko"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -48,7 +50,8 @@
 
 </head>
 <body>
-<script>
+<script th:inline="javascript">
+
 $(document).ready(function(){
     $('.datepicker')
         .datepicker({
@@ -61,30 +64,25 @@ $(document).ready(function(){
 
         })
         .on('changeDate', function(){
-            $('#pickdate').empty();
-            $('#pickdate').append($('#dp1').val());
+            //$('#pickdate').empty();
+            //$('#pickdate').append($('#dp1').val());
+            action='modify';
+            type = 'PUT';
+            data1 = $('#dp1').val();
+            data2 = /*[[${display.dp_seq}]]*/ "dp_seq";
 
-        })
+            var results = $.ajax({
+                url: "/getSeat",
+                method: "POST",
+                data:{data1, data2},
+                dataType: "json"
 
-    $('.timepicker').timepicker({
-        timeFormat: 'h:mm p',
-        interval: 30,
-        minTime: '10',
-        maxTime: '5:30pm',
-        defaultTime: '10',
-        startTime: '10:00',
-        dynamic: false,
-        dropdown: true,
-        scrollbar: true,
+        });
 
-        change: function(time) {
-            var txt = time.toLocaleString('en-US',{hour: '2-digit', minute: '2-digit', hour12: true});
-            $("#picktime").text(txt);
+        results.done(function(data){
 
-        }
 
-    })
-
+         });
 });
 
 </script>
@@ -96,7 +94,7 @@ $(document).ready(function(){
                     <div class="feature-v3 d-block">
                         <div class="image-stack-v2">
                             <div class="image-stack__item image-stack__item--bottom">
-                                <img th:src="${detail.dp_main_page}" alt="Image" class="img-fluid">
+                                <img th:src="${display.dp_main_page}" alt="Image" class="img-fluid">
                             </div>
                         </div>
                     </div>
@@ -105,10 +103,10 @@ $(document).ready(function(){
                 <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0">
                     <div class="feature-v3 d-block">
                         <div class="text">
-                            <h2 class="mb-4">[[${detail.dp_name}]]</h2>
+                            <h2 class="mb-4">[[${display.dp_name}]]</h2>
                             <div class="line my-3"></div>
                             <br><br>
-                            <p>기간 : </p><p>[[${detail.dp_start}]] ~ [[${detail.dp_end}]]</p>
+                            <p>기간 : </p><p>[[${display.dp_start}]] ~ [[${display.dp_end}]]</p>
                             <br>
                             <p>시간 : </p><p>월,화,수,목,금,토,일 : 10:00-18:00</p>
                             <br>
@@ -122,6 +120,8 @@ $(document).ready(function(){
 
                 <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0">
                     <form th:action="@{/display/reserveOk}" method="post" enctype="Multipart/form-data">
+                        <input type="hidden" name="dp_seq" th:value="${display.dp_seq}"/>
+                        <input type="hidden" name="dp_name" th:value="${display.dp_name}"/>
                     <div class="feature-v3 d-block">
                         <div class="text">
                             <br><br><br><br><br>
@@ -136,22 +136,11 @@ $(document).ready(function(){
                             </div>
                         </div>
 
-                        <div class="text">
-                            <h3>관람 시간:</h3>
-                            <div class="container-fluid px-1 px-sm-5 mx-auto">
-                                <div class="row d-flex justify-content-sm-center px-2">
-                                    <div class="form-group row">
-                                        <input type="text" id="tp1" class="timepicker"/>
-                                        <div id="picktime"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                             <br>
-                            <h3>잔여석 : </h3><span>[[${book.seat}]]</span>
+                            <h3>잔여석 : </h3><span>[[${detail.seatCount}]]</span>
                             <br><br><br>
                     </div>
-                        <button type="submit" class="btn btn-success" id="pick" th:if="${book.seat > 0}">예약완료</button>
+                        <button type="submit" class="btn btn-success" id="pick" th:if="${detail.seatCount > 0}" sec:authorize="hasAnyRole('ADMIN', 'MEMBER')">예약완료</button>
                     </form>
                 </div>
             </div>

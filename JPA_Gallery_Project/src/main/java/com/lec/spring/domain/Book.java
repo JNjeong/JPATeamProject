@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDate;
 
@@ -24,27 +23,20 @@ public class Book {
     private Long id;
 
 
-    // Book:Display = N:1
-    @ManyToOne
-    @ToString.Exclude
-    private Display display;
-
-
     // Book:User = N:1
     @ManyToOne
     @ToString.Exclude
     private User user;
 
 
+    // Book:DisplayDetail = N:1
+    @ManyToOne
+    @ToString.Exclude
+    private DisplayDetail displayDetail;
+
+
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate visit_date;
-
-
-    // 잔여석
-    @Column(nullable = false)
-    private Long seat;
-
-
 
 }

@@ -2,8 +2,10 @@ package com.lec.spring.service;
 
 import com.lec.spring.domain.Board;
 import com.lec.spring.domain.FileDTO;
+import com.lec.spring.domain.User;
 import com.lec.spring.repository.BoardRepository;
 import com.lec.spring.repository.FileRepository;
+import com.lec.spring.repository.UserRepository;
 import com.lec.spring.util.Util;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -266,10 +268,4 @@ public class BoardService {
     }
 
 }
-
-
-
-
-
-
 

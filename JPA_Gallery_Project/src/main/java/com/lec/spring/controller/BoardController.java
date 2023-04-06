@@ -2,6 +2,7 @@ package com.lec.spring.controller;
 
 import com.lec.spring.domain.Board;
 import com.lec.spring.domain.BoardValidator;
+//import com.lec.spring.service.BoardService;
 import com.lec.spring.service.BoardService;
 import com.lec.spring.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
