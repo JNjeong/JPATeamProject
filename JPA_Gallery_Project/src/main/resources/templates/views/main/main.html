@@ -20,6 +20,7 @@
       href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
     <link rel="stylesheet" th:href="@{/css/animate.min.css}" />
@@ -31,6 +32,8 @@
     <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}" />
     <link rel="stylesheet" th:href="@{/css/aos.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+
+    <script th:src="@{/js/main/main.js}"></script>
 
     <title>메인 페이지</title>
   </head>
@@ -71,52 +74,11 @@
       <div class="container">
         <div class="row mb-4 align-items-center">
           <div class="col-6">
-            <h2 class="line-top">전시회</h2>
+            <h2 class="line-top bold">전시회</h2>
           </div>
+          <br><br><br>
         </div>
-        <div class="row align-items-center justify-content-around">
-          <div class="col-lg-4 text-center">
-            <div>
-              <div data-jarallax-element="-100" class="jarallax">
-                <h2>전시회 이름</h2>
-                <span class="d-inline-block">Museum Name</span>
-                <img
-                  th:src="@{/images/img_v_2-min.jpg}"
-                  alt="Image"
-                  class="img-fluid my-3 my-lg-5"
-                />
-                <p class="line-top fig-2-text mb-4">전시회 설명</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 text-center">
-            <div>
-              <div data-jarallax-element="-100" class="jarallax">
-                <h2>전시회 이름</h2>
-                <span class="d-inline-block">Museum Name</span>
-                <img
-                        th:src="@{/images/img_v_2-min.jpg}"
-                  alt="Image"
-                  class="img-fluid my-3 my-lg-5"
-                />
-                <p class="line-top fig-2-text mb-4">전시회 설명</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 text-center">
-            <div>
-              <div data-jarallax-element="-100" class="jarallax">
-                <h2>전시회 이름</h2>
-                <span class="d-inline-block">Museum Name</span>
-                <img
-                  th:src="@{/images/img_v_2-min.jpg}"
-                  alt="Image"
-                  class="img-fluid my-3 my-lg-5"
-                />
-                <p class="line-top fig-2-text mb-4">전시회 설명</p>
-              </div>
-            </div>
-          </div>
+        <div id="museumDiv" class="row align-items-center justify-content-around">
         </div>
       </div>
     </div>
@@ -126,7 +88,8 @@
       <div class="container">
         <div class="row mb-4 align-items-center">
           <div class="col-6">
-            <h2 class="line-top">미술관</h2>
+            <h2 class="line-top bold">미술관</h2>
+            <br/><br/>
           </div>
         </div>
         <div class="row">
@@ -196,101 +159,16 @@
       </div>
     </div>
 
-    <div class="section-4">
+    <!-- 전시품 사진 및 바로가기 -->
+    <div class="site-section">
       <div class="container">
         <div class="row mb-4 align-items-center">
           <div class="col-6">
-            <h2 class="line-top">전시품</h2>
+            <h2 class="line-top bold">전시품</h2>
           </div>
-          <div class="col-6 text-right">
-            <a href="#" class="custom-prev-v2 js-custom-prev-v2">Prev</a>
-            <span class="mx-3">/</span>
-            <a href="#" class="custom-next-v2 js-custom-next-v2">Next</a>
-          </div>
+          <br><br><br>
         </div>
-
-        <div>
-          <div class="owl-4-slider owl-carousel">
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{images/img_v_8-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Woman Floral Dress</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{/images/img_v_7-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Man White Blazer</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{/images/img_v_3-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Woman Floral Dress</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{/images/img_v_4-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Woman Floral Dress</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{/images/img_v_6-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Woman Floral Dress</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{/images/img_v_5-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Woman Floral Dress</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{/images/img_v_3-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Woman Floral Dress</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-
-            <div class="product">
-              <a href="#" class="d-block">
-                <img th:src="@{/images/img_v_4-min.jpg}" alt="Image" class="img-fluid" />
-              </a>
-              <div class="text-center text-md-left">
-                <h3>Woman Floral Dress</h3>
-                <p>Far far away, behind the word mountains, far from the countries.</p>
-              </div>
-            </div>
-          </div>
+        <div id="exhibition" class="row align-items-center justify-content-around">
         </div>
       </div>
     </div>

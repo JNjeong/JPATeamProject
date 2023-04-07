@@ -73,7 +73,7 @@ public class UserController {
 
         // 이미 등록된 중복된 전화번호나 이메일이 들어오면
         if(!result.hasFieldErrors("phonenumber") && userService.isPhonenumber(user.getPhonenumber())){
-            result.rejectValue("phonenumber", "이미 존재하는 전화번호입니다");
+                result.rejectValue("phonenumber", "이미 존재하는 전화번호입니다");
         } else if (!result.hasFieldErrors("email") && userService.isEmail(user.getEmail())) {
             result.rejectValue("email", "이미 존재하는 이메일입니다");
         }
@@ -131,12 +131,23 @@ public class UserController {
             , BindingResult result  // UserValidator 가 유효성 검증한 결과가 담긴 객체
             , Model model
             , RedirectAttributes redirectAttrs
+            , Principal principal
+            , @RequestParam("email") String email
+            , @RequestParam("phonenumber") String phonenumber
     ){
+        String loginId = principal.getName();
+        User userDetail = userService.findByUsername(loginId);
+
         // 이미 등록된 중복된 전화번호나 이메일이 들어오면
-        if(!result.hasFieldErrors("phonenumber") && userService.isPhonenumber(user.getPhonenumber())){
-            result.rejectValue("phonenumber", "이미 존재하는 전화번호입니다");
-        } else if (!result.hasFieldErrors("email") && userService.isEmail(user.getEmail())) {
+        if(!phonenumber.equals(userDetail.getPhonenumber())) {
+            if(!result.hasFieldErrors("phonenumber") && userService.isPhonenumber(user.getPhonenumber())){
+                result.rejectValue("phonenumber", "이미 존재하는 전화번호입니다");
+            }
+        }
+        if (!email.equals(userDetail.getEmail())){
+            if(!result.hasFieldErrors("email") && userService.isEmail(user.getEmail())){
             result.rejectValue("email", "이미 존재하는 이메일입니다");
+            }
         }
 
         // 검증 에러가 있었다면 redirect 한다
@@ -145,6 +156,7 @@ public class UserController {
             redirectAttrs.addFlashAttribute("name", user.getName());
             redirectAttrs.addFlashAttribute("phonenumber", user.getPhonenumber());
             redirectAttrs.addFlashAttribute("email", user.getEmail());
+
 
             List<FieldError> errList = result.getFieldErrors();
             for(FieldError err : errList){

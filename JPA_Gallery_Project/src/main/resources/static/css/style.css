@@ -931,6 +931,7 @@ h4,
 .product {
   background: #ffffff;
 }
+
 .product > a {
   display: block;
   overflow: hidden;
@@ -948,7 +949,7 @@ h4,
   font-size: 18px;
 }
 .product strong {
-  font-weight: 700;
+  font-weight: 800;
   font-size: 20px;
 }
 .product:hover img {
@@ -957,7 +958,7 @@ h4,
   transform: scale(1.1);
 }
 .product > div {
-  padding: 30px;
+  padding: 5px;
 }
 .product > div p {
   color: #7a7a7a;
@@ -1532,6 +1533,27 @@ h4,
     bottom: -100px;
     margin-bottom: 140px;
   }
+}
+
+.img-museum{
+    width: 510px;
+    height: 290px;
+}
+
+.bold{
+    font-weight: bolder;
+}
+
+.title-museum{
+    width: 350px;
+    height: 50px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.img-exhibition{
+    width: 250px;
+    height: 150px;
 }
 
 .site-cover-2 {

@@ -104,11 +104,11 @@
                 </div>
                 <div class="form-group justify-content-center">
                   <label class="text-black" for="email">이메일</label>
-                  <input type="text" class="form-control" id="email" name="email" placeholder="이메일" th:value="${userInfo.email}" required/>
+                  <input type="text" class="form-control" id="email" th:name="email" placeholder="이메일" th:value="${email}" required/>
                 </div>
                 <div class="form-group justify-content-center">
                   <label class="text-black" for="phonenumber">휴대폰 번호</label>
-                  <input type="text" class="form-control" id="phonenumber" name="phonenumber" placeholder="휴대폰 번호" th:value="${userInfo.phonenumber}" required/>
+                  <input type="text" class="form-control" id="phonenumber" th:name="phonenumber" placeholder="휴대폰 번호" th:value="${phonenumber}" required/>
                 </div>
 
                 <br />
