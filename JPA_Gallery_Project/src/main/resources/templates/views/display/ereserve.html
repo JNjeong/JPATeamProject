@@ -9,6 +9,11 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
+
+<script sec:authorize="isAnonymous()">
+	alert("예약을 하시려면 로그인을 진행해주시기 바랍니다");
+</script>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -53,10 +58,13 @@
 <script th:inline="javascript">
 
 $(document).ready(function(){
+    $('#pick').prop('disabled', true);
+
     $('.datepicker')
         .datepicker({
             format: 'yyyy-mm-dd',
-            startDate: '0d',
+            startDate: '/*[[${display.dp_start}]]*/',
+            endDate: '/*[[${display.dp_end}]]*/',
             todayHighlight: true,
             toggleActive: true,
             autoclose: true,
@@ -64,26 +72,45 @@ $(document).ready(function(){
 
         })
         .on('changeDate', function(){
-            //$('#pickdate').empty();
-            //$('#pickdate').append($('#dp1').val());
-            action='modify';
-            type = 'PUT';
-            data1 = $('#dp1').val();
-            data2 = /*[[${display.dp_seq}]]*/ "dp_seq";
+            //alert($('#dp1').val());  //
+
+            $('#pickdate').empty();
+            $('#pickdate').append($('#dp1').val());
+           // action='modify';
+           // type = 'PUT';
+            let data1 = $('#dp1').val();
+            let data2 = /*[[${display.dp_seq}]]*/ "dp_seq";
+
+           // alert(data2);  //
 
             var results = $.ajax({
-                url: "/getSeat",
+                url: "/display/getCount",
                 method: "POST",
-                data:{data1, data2},
-                dataType: "json"
+               data:{data1, data2},
+                dataType: "json",
+                success: function(data){
+                    //alert(data);
+                    $("#seatCount").empty();
+                    $("#seatCount").text(data);
+                    if(data == 0){
+                        $('#pick').prop('disabled', true);
+                    } else {
+                       $('#pick').removeAttr('disabled');
+                       $('[name=visitDate]').val($('#dp1').val());
+                    }
+                },
+            });
 
         });
 
-        results.done(function(data){
+       // results.done(function(data){
 
 
-         });
+        // });
+
 });
+
+
 
 </script>
 
@@ -110,9 +137,9 @@ $(document).ready(function(){
                             <br>
                             <p>시간 : </p><p>월,화,수,목,금,토,일 : 10:00-18:00</p>
                             <br>
-                            <p>관람안내 : </p><p>·  입장마감시간은 선택하신 관람시간부터 20분 전까지 입니다.
-                            <br>
-                            ·  타인에게 관람권을 양도 또는 판매하는 행위는 금지하고 있으며, 예약자 본인이 아닌 경우 관람이 제한될 수 있습니다.</p>
+                            <p>관람안내 : </p><p>·  선택하신 관람일의 매 시간 10분 전까지 예약증을 제출하시면 입장이 가능합니다.
+                            ((예)9시 50분까지 제출하시면 10시 입장)</p>
+                            <p>·  타인에게 예약증을 양도 또는 판매하는 행위는 금지하고 있으며, 예약자 본인이 아닌 경우 관람이 제한될 수 있습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -120,8 +147,12 @@ $(document).ready(function(){
 
                 <div class="col-12 col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0">
                     <form th:action="@{/display/reserveOk}" method="post" enctype="Multipart/form-data">
+                        <input type="hidden" name="book_id" th:value="${book.id}"/>
                         <input type="hidden" name="dp_seq" th:value="${display.dp_seq}"/>
                         <input type="hidden" name="dp_name" th:value="${display.dp_name}"/>
+                        <input type="hidden" name="visitDate" th:value="${detail.visitDate}"/>
+                        <input type="hidden" name="user_email" id="memail" th:value="${user.email}"/>
+
                     <div class="feature-v3 d-block">
                         <div class="text">
                             <br><br><br><br><br>
@@ -137,10 +168,10 @@ $(document).ready(function(){
                         </div>
 
                             <br>
-                            <h3>잔여석 : </h3><span>[[${detail.seatCount}]]</span>
+                            <h3>잔여석 : </h3><h3 id="seatCount">[[${detail.seatCount}]]</h3>
                             <br><br><br>
                     </div>
-                        <button type="submit" class="btn btn-success" id="pick" th:if="${detail.seatCount > 0}" sec:authorize="hasAnyRole('ADMIN', 'MEMBER')">예약완료</button>
+                        <button type="submit" class="btn btn-success" id="pick" sec:authorize="isAuthenticated()">예약완료</button>
                     </form>
                 </div>
             </div>

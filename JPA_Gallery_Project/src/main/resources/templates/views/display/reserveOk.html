@@ -5,7 +5,9 @@
      history.back();
   </script>
 <script th:if="${result > 0}" th:inline="javascript">
+     // let data2 = /*[[${book.id}]]*/ ;
      alert("예약완료! 예약 확인증이 이메일로 발송되었습니다.");
+     //alert(data2);
      location.href = "elist";
   </script>
 </html>

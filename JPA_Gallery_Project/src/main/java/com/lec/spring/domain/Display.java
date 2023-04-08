@@ -24,7 +24,7 @@ public class Display {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @JsonProperty("DP_SEQ")
     private Long dp_seq;
 

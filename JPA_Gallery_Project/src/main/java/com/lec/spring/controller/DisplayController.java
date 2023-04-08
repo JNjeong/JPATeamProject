@@ -1,12 +1,13 @@
 package com.lec.spring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lec.spring.domain.Book;
-import com.lec.spring.domain.Display;
-import com.lec.spring.domain.DisplayDetail;
-import com.lec.spring.domain.ListExhibition;
+import com.lec.spring.config.PrincipalDetails;
+import com.lec.spring.domain.*;
 import com.lec.spring.service.DisplayService;
+import com.lec.spring.service.RegisterMail;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
@@ -25,6 +27,9 @@ public class DisplayController {
 
     @Autowired
     private DisplayService displayService;
+
+    @Autowired
+    private RegisterMail registerMail;
 
     public DisplayController(){
         System.out.println("DisplayController() 생성");
@@ -70,24 +75,45 @@ public class DisplayController {
 
 
     @PostMapping("/ereserve")
-    public void displayReserve(Display display, Book book, DisplayDetail detail, Model model){
+    public void displayReserve(Display display, Book book, DisplayDetail detail, User user, Model model){
         model.addAttribute("display", display);
         model.addAttribute("book", book);
-        model.addAttribute("DisplayDetail", detail);
-        model.addAttribute("result", displayService.reserve(book));
+        model.addAttribute("detail", detail);
+        model.addAttribute("user", user);
 
     }
 
-//    @RequestMapping(value = "/getCount")
-//    @ResponseBody
-//    public Integer getCounts(
-//            @RequestParam("dp_seq")Integer dp_seq,
-//            @RequestParam("visit_date")LocalDate visit_date){
-//        Integer seatCount = DisplayService.getCountSeat(dp_seq, visit_date);
-//        return seatCount;
-//    }
+
+    @RequestMapping(value = "/getCount")
+    @ResponseBody
+    public Long getCounts(
+            @RequestParam("data2")Long dp_seq,
+            @RequestParam("data1")LocalDate visit_date){
+        Long seatCount = displayService.getCountSeat(dp_seq, visit_date);
+        return seatCount;
+//        return 0;
+    }
 
 
+
+    @PostMapping("/reserveOk")
+    public void displayReserveOk(Display display, Book book, DisplayDetail detail, User user, Model model){
+        model.addAttribute("display", display);
+        model.addAttribute("book", book);
+        model.addAttribute("detail", detail);
+        model.addAttribute("user", user);
+        long bookId = displayService.reserve(display, detail);
+        model.addAttribute("result", bookId);
+
+        User userInfo = ((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
+        String userName = userInfo.getName();
+        String userContact = userInfo.getPhonenumber();
+        String email = userInfo.getEmail();
+        if(bookId > 0) {
+                registerMail.sendMail(email, bookId, userName, userContact, display.getDp_name(), detail.getVisitDate());
+        }
+
+    }
 
 
 }

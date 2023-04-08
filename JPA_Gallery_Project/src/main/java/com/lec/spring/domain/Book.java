@@ -35,8 +35,6 @@ public class Book {
     private DisplayDetail displayDetail;
 
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate visit_date;
+
 
 }

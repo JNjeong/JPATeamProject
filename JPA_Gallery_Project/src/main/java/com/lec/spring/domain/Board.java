@@ -37,14 +37,14 @@ public class Board extends BaseEntity{
 
     // 첨부파일, 댓글
     // Write : File = 1:N
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    @Builder.Default
-    private List<FileDTO> fileList = new ArrayList<>();
-
-    public void addFiles(FileDTO... files){
-        Collections.addAll(this.fileList, files);
-    }
+//    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+//    @ToString.Exclude
+//    @Builder.Default
+//    private List<FileDTO> fileList = new ArrayList<>();
+//
+//    public void addFiles(FileDTO... files){
+//        Collections.addAll(this.fileList, files);
+//    }
 
 }
 
