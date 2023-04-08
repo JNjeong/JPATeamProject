@@ -27,8 +27,7 @@
     <link rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}" />
     <link rel="stylesheet" th:href="@{/css/aos.css}" />
     <link rel="stylesheet" th:href="@{/css/style.css}" />
-
-    <script th:src="@{/js/board/board.js}"></script>
+    <script th:src="@{/js/board/list.js}"></script>
 
     <title>전체게시글</title>
 </head>
@@ -101,7 +100,7 @@
                             <a th:href="@{/board/detail(id=${dto.id})}">
                                 <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion_1">
                                     <div class="accordion-body">
-                                        "[[${dto.subject}]]" -[[${dto.username}]]-  ([[${dto.viewCnt}]] views on [[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]])
+                                        "[[${dto.subject}]]" -[[${dto.user.username}]]-  ([[${dto.viewCnt}]] views on [[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]])
                                     </div>
                                 </div>
                             </a>
@@ -115,7 +114,9 @@
 
     <div class="row">
         <div class="col-12">
-            <a class="btn btn-outline-dark" th:href="@{/board/write}" sec:authorize="hasAnyRole('ADMIN', 'MEMBER')">작성</a>
+<!--            <a class="btn btn-outline-dark" th:href="@{/board/write}" sec:authorize="hasAnyRole('ADMIN', 'MEMBER')">작성</a>-->
+            <a class="btn btn-outline-dark" th:href="@{/board/write}">작성</a>
+
         </div>
     </div>
 
@@ -140,9 +141,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 <th:block th:insert="~{common/footer::footer}"></th:block>
 

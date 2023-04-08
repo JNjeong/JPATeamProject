@@ -74,14 +74,17 @@ public class BoardService {
         return 1;
     }
 
+    // 특정 글(id) 첨부파일(들) 추가
     private void addFiles(Map<String, MultipartFile> files, Long id){
         if(files != null){
             for(Map.Entry<String, MultipartFile> e :files.entrySet()){
+
                 if(!e.getKey().startsWith("upfile")) continue;
 
                 System.out.println("\n첨부파일 정보: " + e.getKey());
                 Util.printFileInfo(e.getValue());
                 System.out.println();
+
                 FileDTO file = upload(e.getValue());
 
                 if(file != null){
@@ -90,7 +93,7 @@ public class BoardService {
                 }
             }
         }
-    }
+    }// end addFiles()
 
     private FileDTO upload(MultipartFile multipartFile){
         FileDTO attachment = null;
@@ -112,21 +115,17 @@ public class BoardService {
                 fileName += "_" + System.currentTimeMillis();
             }
         }
+
         Path copyOfLocation = Paths.get(new File(uploadDir + File.separator + fileName).getAbsolutePath());
         System.out.println(copyOfLocation);
         try {
-            Files.copy(
-                    multipartFile.getInputStream(),
-                    copyOfLocation,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
+            Files.copy(multipartFile.getInputStream(),copyOfLocation,StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
         attachment = FileDTO.builder().file(fileName).source(sourceName).build();
-
         return attachment;
-    }
+    } // end upload
 
 
     @Transactional
@@ -147,18 +146,19 @@ public class BoardService {
 
     private void setImage(List<FileDTO> fileList) {
         String realPath = new File(uploadDir).getAbsolutePath();
-
         for(FileDTO fileDto : fileList) {
             BufferedImage imgData = null;
-            File f = new File(realPath, fileDto.getFile());
+            File f = new File(realPath, fileDto.getFile());  // 첨부파일에 대한 File 객체
             try {
                 imgData = ImageIO.read(f);
-            }
-            catch (IOException e) {
+                // ※ ↑ 파일이 존재 하지 않으면 IOExcepion 발생한다
+                //   ↑ 이미지가 아닌 경우는 null 리턴
+            } catch (IOException e) {
                 System.out.println("파일존재안함: " + f.getAbsolutePath() + " [" + e.getMessage() + "]");
             }
-            if(imgData != null) fileDto.setImage(true);
-        }
+
+            if(imgData != null) fileDto.setImage(true); // 이미지 여부 체크
+        } // end for
     }
 
     public List<Board> list(){
@@ -243,10 +243,10 @@ public class BoardService {
         if(board != null) {
             List<FileDTO> fileList = fileRepository.findByBoard(id);
             if(fileList != null && fileList.size() > 0) {
-                for(FileDTO file : fileList) {delFile(file);}
-                boardRepository.delete(board);
-                return 1;
+                for (FileDTO file : fileList) {delFile(file);}
             }
+            boardRepository.delete(board);
+            return 1;
         }
         return result;
     }
@@ -255,7 +255,6 @@ public class BoardService {
         String saveDirectory = new File(uploadDir).getAbsolutePath();
         File f = new File(saveDirectory, file.getFile());
         System.out.println("삭제시도--> " + f.getAbsolutePath());
-
         if (f.exists()) {
             if (f.delete()) {
                 System.out.println("삭제 성공");
@@ -266,6 +265,7 @@ public class BoardService {
             System.out.println("파일이 존재하지 않습니다.");
         }
     }
+
 
 }
 

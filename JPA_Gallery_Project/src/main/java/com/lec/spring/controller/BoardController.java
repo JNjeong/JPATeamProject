@@ -45,9 +45,7 @@ public class BoardController {
     }
 
     @GetMapping("/list")
-    //public void list(Model model){
     public void list(Integer page, Model model){
-//        model.addAttribute("list", boardService.list());
         boardService.list(page, model);
     }
 

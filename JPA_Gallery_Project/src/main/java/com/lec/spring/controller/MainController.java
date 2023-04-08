@@ -17,6 +17,9 @@ public class MainController {
     @RequestMapping("/main")
     public void main(){}
 
+    @RequestMapping("/about")
+    public void about(){}
+
     @RequestMapping("/auth")
     @ResponseBody
     public Authentication auth(){

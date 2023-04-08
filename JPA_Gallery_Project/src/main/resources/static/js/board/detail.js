@@ -17,7 +17,9 @@ $(function(){
     // 1. 어느글에 대한 댓글인지? --> 위에 id 변수에 담겨있다
     // 2. 어느 사용자가 작성한 댓글인지? --> logged_uid 값
     // 3. 댓글 내용은 무엇인지?  --> 아래 content
-    $("btn_comment").click(function(){
+    $("#btn_comment").click(function(){
+        console.log("### log comment 버튼 클릭");
+
         //입력한 댓글
         const content = $("#input_comment").val().trim()
 
@@ -36,7 +38,7 @@ $(function(){
         };
 
         $.ajax({
-            url : conPath: "/comment/write",
+            url : conPath+ "/comment/write",
             type: "POST",
             data : data,
             cache : false,
@@ -60,7 +62,7 @@ $(function(){
 // 글(board_id)의 댓글 목록 읽어오기
 function loadComment(board_id){
     $.ajax({
-        url: http: conPath + "/comment/list?id=" + board_id,
+        url: conPath + "/comment/list?id=" + board_id,
         type: "GET",
         cache: false,
         success: function(data,status){
@@ -101,7 +103,7 @@ function buildComment(result){
         const row = `
             <li class="comment">
                 <div class="vcard bio">
-                    <img src="images/person_6-min.jpg" alt="Image placeholder">
+                    <img src="../images/profile.png" alt="Image placeholder">
                 </div>
                 <div class="comment-body">
                     <h3>${username}</h3>
