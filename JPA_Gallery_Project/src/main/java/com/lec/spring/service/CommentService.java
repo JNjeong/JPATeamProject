@@ -36,7 +36,7 @@ public class CommentService {
     public QryCommentList list(Long id) {
         QryCommentList list = new QryCommentList();
 
-        List<Comment> comments = commentRepository.findByWrite(id, Sort.by(Sort.Order.desc("id")));
+        List<Comment> comments = commentRepository.findByBoard(id, Sort.by(Sort.Order.desc("id")));
 
         list.setCount(comments.size());
         list.setList(comments);
@@ -45,7 +45,6 @@ public class CommentService {
         return list;
     }
 
-    // 특정 글(writeId) 에 특정 사용자(userId) 가 댓글 작성
     public QryResult write(Long boardId, Long userId, String content) {
         User user = userRepository.findById(userId).orElse(null);
 

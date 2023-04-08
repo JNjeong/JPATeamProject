@@ -39,7 +39,6 @@ public class CustomLoginFailureHandler implements AuthenticationFailureHandler {
         request.setAttribute("errorMessage", errorMessage);
         request.setAttribute("username", request.getParameter("username"));
 
-        // ↓ redirect or forward 시켜줌
         request.getRequestDispatcher(DEFAULT_FAILURE_FORWARD_URL).forward(request, response);
     }
 }

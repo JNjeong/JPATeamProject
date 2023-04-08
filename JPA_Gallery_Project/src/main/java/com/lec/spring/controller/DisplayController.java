@@ -78,14 +78,14 @@ public class DisplayController {
 
     }
 
-    @RequestMapping(value = "/getCount")
-    @ResponseBody
-    public Integer getCounts(
-            @RequestParam("dp_seq")Integer dp_seq,
-            @RequestParam("visit_date")LocalDate visit_date){
-        Integer seatCount = DisplayService.getCountSeat(dp_seq, visit_date);
-        return seatCount;
-    }
+//    @RequestMapping(value = "/getCount")
+//    @ResponseBody
+//    public Integer getCounts(
+//            @RequestParam("dp_seq")Integer dp_seq,
+//            @RequestParam("visit_date")LocalDate visit_date){
+//        Integer seatCount = DisplayService.getCountSeat(dp_seq, visit_date);
+//        return seatCount;
+//    }
 
 
 

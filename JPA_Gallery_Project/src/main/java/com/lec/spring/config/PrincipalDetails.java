@@ -18,7 +18,6 @@ public class PrincipalDetails implements UserDetails {
         this.userService = userService;
     }
 
-    // 로그인한 사용자 정보
     private User user;
 
     public User getUser() {
@@ -30,31 +29,25 @@ public class PrincipalDetails implements UserDetails {
         this.user = user;
     }
 
-    // 해당 User 의 권한(들) 리턴함
-    // 현재 로그인한 사용자의 권한정보가 필요할때마다 호출됨 (필요할때마다 직접 호출해 사용할수도 있음)
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         System.out.println("getAuthorities() 호출");
-
         Collection<GrantedAuthority> collect = new ArrayList<>();
 
-        List<Authority> list = userService.selectAuthoritiesById(user.getId());  // DB 에서 user 의 권한(들) 읽어오기
-
+        List<Authority> list = userService.selectAuthoritiesById(user.getId());
         for(Authority auth : list){
             collect.add(new GrantedAuthority() {
-
                 @Override
                 public String getAuthority() {
                     return auth.getName();
                 }
-
                 @Override
                 public String toString() {
                     return auth.getName();
-                } // thymeleaf 등에서 활용할 문자열
+                }
             });
         }
-
         return collect;
     }
 

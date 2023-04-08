@@ -14,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
-// Controller layer
-//  request 처리 ~ response
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -46,7 +44,6 @@ public class BoardController {
         model.addAttribute("conPath", Util.getRequest().getContextPath());
     }
 
-    // 페이징 사용
     @GetMapping("/list")
     //public void list(Model model){
     public void list(Integer page, Model model){
@@ -75,15 +72,12 @@ public class BoardController {
         return "board/deleteOk";
     }
 
-    // 이 컨트롤러 클래스의 handler 에서 폼 데이터를 바인딩 할때 검증하는 Validator 객체 지정
     @InitBinder
     public void initBinder(WebDataBinder binder){
         System.out.println("initBinder() 호출");
         binder.setValidator(new BoardValidator());
     }
 
-    // 페이징
-    // pageRows 변경시 동작
     @PostMapping("/pageRows")
     public String pageRows(Integer page, Integer pageRows){
         Util.getSession().setAttribute("pageRows", pageRows);

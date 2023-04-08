@@ -19,21 +19,16 @@ public class PrincipalDetailService implements UserDetailsService {
 
         System.out.println("loadUserByUsername(" + username + ")");
 
-        // DB 조회
         User user = userService.findByUsername(username);
         
-        // 해당 username 의 user 가 DB 에 있다면 UserDetails 생성해서 리턴
         if(user != null){
             PrincipalDetails userDetails = new PrincipalDetails(user);
             userDetails.setUserService(userService);
             return userDetails;
         }
 
-        // 해당 username의 user 가 없다면? ==> UsernameNotFoundException을 throw 해주어야 한다.
-
         throw new UsernameNotFoundException(username);
 
-        //주의! 여기서 null return 하면 예외 발생된다.
     }
 }
 

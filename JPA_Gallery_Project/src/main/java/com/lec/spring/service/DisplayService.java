@@ -47,11 +47,11 @@ public class DisplayService {
 
         return 1;
     }
-
-    public Integer getCountSeat(Integer dp_seq, LocalDate visit_date) {
-        Book book = displayRepository.findBy(visit_date);
-
-    }
+//
+//    public Integer getCountSeat(Integer dp_seq, LocalDate visit_date) {
+//        Book book = displayRepository.findBy(visit_date);
+//
+//    }
 
 
 }

@@ -137,7 +137,7 @@ public class BoardService {
         if(board != null){
             board.setViewCnt(board.getViewCnt() + 1);
             boardRepository.saveAndFlush(board);
-            List<FileDTO> fileList = fileRepository.findByWrite(board.getId());
+            List<FileDTO> fileList = fileRepository.findByBoard(board.getId());
             setImage(fileList);
             board.setFileList(fileList);
             list.add(board);
@@ -167,13 +167,13 @@ public class BoardService {
 
     public List<Board> selectById(long id) {
         List<Board> list = new ArrayList<>();
-        Board write = boardRepository.findById(id).orElse(null);
+        Board board = boardRepository.findById(id).orElse(null);
 
-        if(write != null){
-            List<FileDTO> fileList = fileRepository.findByWrite(write.getId());
+        if(board != null){
+            List<FileDTO> fileList = fileRepository.findByBoard(board.getId());
             setImage(fileList);
-            write.setFileList(fileList);
-            list.add(write);
+            board.setFileList(fileList);
+            list.add(board);
         }
         return list;
     }
@@ -214,15 +214,15 @@ public class BoardService {
 
 
 
-    public int update(Board write, Map<String, MultipartFile> files, Long[] delfile){
+    public int update(Board board, Map<String, MultipartFile> files, Long[] delfile){
         int result = 0;
 
-        Board w =boardRepository.findById(write.getId()).orElse(null);
+        Board w =boardRepository.findById(board.getId()).orElse(null);
         if(w != null){
-            w.setSubject(write.getSubject());
-            w.setContent(write.getContent());
+            w.setSubject(board.getSubject());
+            w.setContent(board.getContent());
             boardRepository.save(w);
-            addFiles(files, write.getId());
+            addFiles(files, board.getId());
             if(delfile != null){
                 for(Long fileId : delfile){
                     FileDTO file = fileRepository.findById(fileId).orElse(null);
@@ -241,7 +241,7 @@ public class BoardService {
         int result = 0;
         Board board = boardRepository.findById(id).orElse(null);
         if(board != null) {
-            List<FileDTO> fileList = fileRepository.findByWrite(id);
+            List<FileDTO> fileList = fileRepository.findByBoard(id);
             if(fileList != null && fileList.size() > 0) {
                 for(FileDTO file : fileList) {delFile(file);}
                 boardRepository.delete(board);

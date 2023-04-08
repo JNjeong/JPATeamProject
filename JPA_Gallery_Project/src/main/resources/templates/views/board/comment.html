@@ -1,31 +1,37 @@
 <!DOCTYPE html>
 <html lang="ko"
-xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <th:block th:fregment="comment">
     <script src="https://kit.fontawesome.com/51772bd9bd.js" crossorigin="anonymous"></script>
 
-    <div class="container my-3 border rounded">
-        <div class="mb-3 mt-3">
-            <label>댓글: <span id="cmt_cnt">[[${}]]</span> 개</label>
-            <div class="input-group my-2" sec:authorize="hasAnyRole('ADMIN','MEMBER')">
-                <input type="text" class="form-control" id="input_comment">
-                <button type="button" class="btn btn-outline-primary" id="btn_comment">작성</button>
-            </div>
+    <div class="pt-5">
+        <h3 class="mb-5" id="cmt_cnt">[[${}]] Comments</h3>
+        <ul class="comment-list" id="cmt_list">
 
-            <table class="table table-hover mt-3" id="cmt_table">
-                <thead>
-                <tr>
-                    <th style="width: 16.66%">작성자</th>
-                    <th>내용</th>
-                    <th style="width: 16.66%">작성일</th>
-                </tr>
-                </thead>
-                <tbody id="cmt_list">
 
-                </tbody>
-            </table>
+
+        </ul>
+
+        <div class="comment-form-wrap pt-5">
+            <h3 class="mb-5">Leave a comment</h3>
+                <div class="form-group">
+                    <label for="name">Name *</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="input_comment">Message</label>
+                    <textarea name="message" id="input_comment" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" value="Post Comment" class="btn btn-primary btn-md" id="btn_comment"></button>
+                </div>
         </div>
     </div>
 

@@ -5,7 +5,7 @@
 
 <th:block th:fragment="pagination" >
   <div class="container mt-1">
-    <ul class="pagination justify-content-center">
+    <ul class="list-unstyled custom-pagination justify-content-center">
       <li class="page-item" th:if="${page > 1}"><a class="page-link" th:href="${url }" title="처음"><i class='fas fa-angle-double-left'></i></a></li>
 
       <li class="page-item" th:if="${startPage > 1 }"><a class="page-link" th:href="@{${url }(page=${startPage - 1 })}"><i class='fas fa-angle-left'></i></a></li>

@@ -16,11 +16,9 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         System.out.println("### 로그아웃 성공 : CustomLogoutSuccessHandler 동작 ###");
 
-        // 로그아웃 시간
         LocalDateTime logoutTime = LocalDateTime.now();
         System.out.println("로그아웃시간: " + logoutTime);
 
-        // 사용시간 계산
         LocalDateTime loginTime = (LocalDateTime)request.getSession().getAttribute("loginTime");
         if(loginTime != null) {
             long seconds = loginTime.until( logoutTime, ChronoUnit.SECONDS );
@@ -30,7 +28,6 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
 
         String redirectUrl = "/user/login?logoutHandler";
 
-        // ret_url  이 있는 경우 logout 하고 해당  url 로 redirect
         if(request.getParameter("ret_url") != null) {
             redirectUrl = request.getParameter("ret_url");
         }

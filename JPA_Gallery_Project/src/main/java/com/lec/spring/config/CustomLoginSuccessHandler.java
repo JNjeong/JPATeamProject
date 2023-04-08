@@ -14,11 +14,9 @@ import java.util.List;
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     public CustomLoginSuccessHandler(String defaultTargetUrl){
-        // 로그인후 특별히 redirect 할 url 이 없는경우 기본적으로 redirect 할 url
         setDefaultTargetUrl(defaultTargetUrl);
     }
 
-    // 로그인 성공 후 수행할 동작
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         System.out.println("### 로그인 성공: onAuthenticationSuccess() 호출 ###");
@@ -35,16 +33,13 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
         });
         System.out.println("authorities: " + roleNames);
 
-        // 로그인 시간을 세션에 저장
         LocalDateTime loginTime = LocalDateTime.now();
         System.out.println("로그인 시간: " + loginTime);
         request.getSession().setAttribute("loginTime", loginTime);
 
-        // 로그인 직전 url 로 redirect 하기
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
-    // request 를 한 client ip 가져오기
     public static String getClientIp(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {

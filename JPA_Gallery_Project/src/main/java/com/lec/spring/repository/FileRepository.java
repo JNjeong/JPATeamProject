@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface FileRepository extends JpaRepository<FileDTO, Long> {
     // 특정 글(write)의 첨부파일들
-    List<FileDTO> findByWrite(Long writeId);
+    List<FileDTO> findByBoard(Long boardId);
 
 }
