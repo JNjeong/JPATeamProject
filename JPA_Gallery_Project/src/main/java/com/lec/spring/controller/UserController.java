@@ -1,8 +1,8 @@
 package com.lec.spring.controller;
 
 import com.lec.spring.config.PrincipalDetails;
-import com.lec.spring.domain.User;
-import com.lec.spring.domain.UserValidator;
+import com.lec.spring.domain.*;
+import com.lec.spring.repository.BookRepository;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,15 +34,21 @@ public class UserController {
     private final UserRepository userRepository;
     @Autowired
     private PasswordEncoder pwEncoder;
+    private BookRepository bookRepository;
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    public UserController(UserRepository userRepository){
+    @Autowired
+    public void setBookRepository(BookRepository bookRepository){this.bookRepository = bookRepository;}
+
+    public UserController(UserRepository userRepository,
+                          BookRepository bookRepository){
         System.out.println(getClass().getName() + "() 생성");
         this.userRepository = userRepository;
+        this.bookRepository = bookRepository;
     }
 
     @GetMapping("/login")
@@ -181,6 +187,9 @@ public class UserController {
         String loginId = principal.getName();
         User user = userService.findByUsername(loginId);
         model.addAttribute("user", user);
+        List<Book> book= bookRepository.findByUser(user);
+        book.forEach(item -> model.addAttribute("dp_name",item.getDisplayDetail().getDisplay().getDp_name()));
+
         return "user/mypage";
     }
 

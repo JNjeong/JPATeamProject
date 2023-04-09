@@ -13,7 +13,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Untree.co">
-    <link rel="shortcut icon" th:href="@{/images/favicon.png}">
+
 
 
     <meta name="description" content="" />
@@ -44,7 +44,16 @@
             <div class="lines"></div>
         </div>
     </div>
-    <!-- END lines -->
+
+    <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+            <div class="site-mobile-menu-close">
+                <span class="icofont-close js-menu-toggle"></span>
+            </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+    </div>
+
 
     <th:block th:insert="~{common/header::header}"></th:block>
 
@@ -93,24 +102,6 @@
     </li></ul>
 
 
-    <th:block>
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <ul class="list-unstyled custom-pagination">
-                    <li th:if="${startPage > 1 }"><a th:href="@{${url }(page=${startPage - 1 })}"><</a></li>
-                    <th:block th:if="${totalPage > 1 }">
-                        <th:block th:each="k: ${#numbers.sequence(startPage, endPage)}">
-                            <li th:unless="${k == page }"><a th:href="@{${url }(page=${k})}" th:text="${k}"></a></li>
-                            <li class="active" th:if="${k == page }"><a class="page-link" href="javascript:void(0);" th:text="${k}"></a></li>
-                        </th:block>
-                    </th:block>
-                    <li th:if="${totalPage > endPage }"><a th:href="@{${url }(page=${endPage + 1 })}">></a></li>
-                </ul>
-            </div>
-        </div>
-    </th:block>
-
-    <!-- .untrtee_co-section -->
 
     <th:block th:insert="~{common/footer::footer}"></th:block>
 
