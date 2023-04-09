@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -188,7 +189,13 @@ public class UserController {
         User user = userService.findByUsername(loginId);
         model.addAttribute("user", user);
         List<Book> book= bookRepository.findByUser(user);
-        book.forEach(item -> model.addAttribute("dp_name",item.getDisplayDetail().getDisplay().getDp_name()));
+        List<Display> displays = new ArrayList<>();
+
+//        book.forEach(item -> model.addAttribute("dp_name",item.getDisplayDetail().getDisplay().getDp_name()));
+        book.forEach(item -> displays.add(item.getDisplayDetail().getDisplay()));
+        model.addAttribute("list", displays);
+
+        book.forEach(item -> System.out.println(item.getDisplayDetail().getDisplay().getDp_name()));
 
         return "user/mypage";
     }
