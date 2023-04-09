@@ -18,7 +18,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Untree.co">
-    <link rel="shortcut icon" th:href="@{/images/favicon.png}">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
@@ -114,6 +113,16 @@ $(document).ready(function(){
 
 </script>
 
+
+<div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close">
+            <span class="icofont-close js-menu-toggle"></span>
+        </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+</div>
+
 <th:block th:insert="~{common/header::header}"></th:block>
 
     <div class="section">
@@ -179,7 +188,7 @@ $(document).ready(function(){
             </div>
         </div>
     </div>
-<th:block th:insert="~{common/footer::footer}"></th:block>
 
+<th:block th:insert="~{common/footer::footer}"></th:block>
 </body>
 </html>

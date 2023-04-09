@@ -9,10 +9,16 @@ import com.lec.spring.repository.DisplayDetailRepository;
 import com.lec.spring.repository.DisplayRepository;
 import com.lec.spring.repository.UserRepository;
 import com.lec.spring.util.Util;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class DisplayService {
@@ -82,6 +88,5 @@ public class DisplayService {
             return displayDetail.getSeatCount();
         }
     }
-
 
 }

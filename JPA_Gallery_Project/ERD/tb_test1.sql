@@ -43,3 +43,4 @@ SELECT * FROM tb_display;
 
 DELETE FROM tb_display_detail;
 
+SELECT * FROM tb_book;
