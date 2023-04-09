@@ -1,6 +1,6 @@
    $(document).ready(function(){
         $.ajax({
-            url: 'http://openapi.seoul.go.kr:8088/774e64616372626638354f6576584d/xml/ListExhibitionOfSeoulMOAInfo/1/100/',
+            url: 'http://openapi.seoul.go.kr:8088/774e64616372626638354f6576584d/xml/ListExhibitionOfSeoulMOAInfo/1/200/',
             type: 'GET',
             dataType: 'xml',
             success: function(response){
@@ -17,6 +17,7 @@
             var row = xmlDOM.getElementsByTagName("row");
             for(i=0; i<3; i++){
                 var r = Math.floor(Math.random() * 100);
+
 				var title = row[r].getElementsByTagName("DP_NAME")[0].childNodes[0].nodeValue;
 				var img = row[r].getElementsByTagName("DP_MAIN_IMG")[0].childNodes[0].nodeValue;
 
@@ -30,9 +31,10 @@
        }
    });
 
+
    $(document).ready(function(){
         $.ajax({
-            url: 'http://openapi.seoul.go.kr:8088/6b416647737262663530774c507371/xml/SemaPsgudInfoKorInfo/1/100/',
+            url: 'http://openapi.seoul.go.kr:8088/6b416647737262663530774c507371/xml/SemaPsgudInfoKorInfo/1/200/',
             type: 'GET',
             dataType: 'xml',
             success: function(response){

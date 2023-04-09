@@ -7,6 +7,7 @@ SELECT * FROM tb_authority;
 SELECT * FROM tb_user_authorities;
 
 SELECT * FROM tb_display;
+SELECT * FROM tb_display_detail;
 
 DELETE * FROM tb_display_detail;
 

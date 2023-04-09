@@ -1,9 +1,10 @@
 package com.lec.spring.service;
 
-import com.lec.spring.domain.Authority;
-import com.lec.spring.domain.User;
+import com.lec.spring.domain.*;
 import com.lec.spring.repository.AuthorityRepository;
+import com.lec.spring.repository.BookRepository;
 import com.lec.spring.repository.UserRepository;
+import com.lec.spring.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +24,7 @@ public class UserService {
     private UserRepository userRepository;
 
     private AuthorityRepository authorityRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -35,8 +37,9 @@ public class UserService {
     }
 
     @Autowired
-    public UserService(){
+    public UserService(BookRepository bookRepository){
         System.out.println(getClass().getName() + "() 생성");
+        this.bookRepository = bookRepository;
     }
 
     // 아이디 (username) 의 user 정보
@@ -118,4 +121,5 @@ public class UserService {
         if(user != null){ return user.getAuthorities(); }
         return new ArrayList<>();
     }
+
 }
