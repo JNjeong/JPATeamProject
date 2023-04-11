@@ -22,7 +22,7 @@ class DisplayTest {
 
     @Test
     void diplayData() throws Exception{
-        String url = "http://openapi.seoul.go.kr:8088/" + "6e4b4657486869683130306761526963/" + "json/ListExhibitionOfSeoulMOAInfo/1/6/";
+        String url = "http://openapi.seoul.go.kr:8088/" + "/" + "json/ListExhibitionOfSeoulMOAInfo/1/6/";
         String respStr = readFromUrl(url);
 
         ObjectMapper mapper = new ObjectMapper();
